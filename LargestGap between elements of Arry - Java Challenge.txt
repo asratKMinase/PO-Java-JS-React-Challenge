@@ -1,0 +1,90 @@
+public class LargestGap {
+
+    public static void main(String [] args){
+
+//Java:
+// Given an array of integers, return the largest gap between the sorted elements of the array.
+// For example, consider the array:
+//[9, 4, 26, 26, 0, 0, 5, 20, 6, 25, 5]... in which, after sorting, the array becomes:
+//<code>[0, 0, 4, 5, 5, 6, 9, 20, 25, 26, 26]</code>... so that we now see that the largest gap in the array is between 9 and 20 which is 11.
+//Examples
+// largestGap([9, 4, 26, 26, 0, 0, 5, 20, 6, 25, 5]) ➞ 11
+// After sorting: [0, 0, 4, 5, 5, 6, 9, 20, 25, 26, 26]
+// Largest gap between 9 and 20 is 11
+
+// largestGap([14, 13, 7, 1, 4, 12, 3, 7, 7, 12, 11, 5, 7]) ➞ 4
+// After sorting: [1, 3, 4, 5, 7, 7, 7, 7, 11, 12, 12, 13, 14]
+// Largest gap between 7 and 11 is 4
+
+// largestGap([13, 3, 8, 5, 5, 2, 13, 6, 14, 2, 11, 4, 10, 8, 1, 9]) ➞ 2
+// After sorting: [1, 2, 2, 3, 4, 5, 5, 6, 8, 8, 9, 10, 11, 13, 13, 14]
+// Largest gap between 6 and 8 is 2
+
+        Scanner input = new Scanner(System.in);
+        System.out.println("How many numbers do you want to enter?");
+        int num = input.nextInt();
+
+        int array[] = new int[num];
+
+        System.out.println("Enter the " + num + " numbers now.");
+
+        for (int i = 0 ; i < array.length; i++ ) {
+            array[i] = input.nextInt();
+        }
+
+        System.out.print("Before Sorting\n");
+        printArray(array);
+
+        quickSort(array, 0, array.length -1);
+
+        System.out.print("\nAfter Sorting\n");
+        printArray(array);
+
+        int [] newArray = new int[array.length];
+
+        for (int i = 1 ; i < array.length; i++){
+            newArray[i] = array[i]-array[i-1];
+        }
+        quickSort(newArray, 0, newArray.length -1);
+        System.out.print("\nLargest Gap\n");
+
+        System.out.println(newArray[newArray.length-1]);
+
+    }
+
+    public static void printArray (int [] array){
+        for (int i =0; i < array.length; i++){
+            System.out.print(array[i] + " ");
+        }
+    }
+
+    public static void quickSort(int [] array, int lowIndex, int highIndex){
+       if (lowIndex >= highIndex){
+           return;
+       }
+
+        int pivot = array[highIndex];
+        int leftPointer = lowIndex;
+        int rightPointer = highIndex;
+
+        while(leftPointer < rightPointer){
+            while (array[leftPointer] <= pivot && leftPointer < rightPointer){
+                leftPointer ++;
+            }
+            while(array[rightPointer] >= pivot && leftPointer < rightPointer){
+                rightPointer--;
+            }
+            swap(array, leftPointer, rightPointer);
+        }
+        swap(array, leftPointer, highIndex);
+        quickSort(array, lowIndex, leftPointer -1);
+        quickSort(array, leftPointer+1, highIndex);
+
+    }
+
+    public static void swap (int [] array, int index1, int index2){
+        int temp = array[index1];
+        array[index1] = array[index2];
+        array[index2] = temp;
+    }
+}
